@@ -12,9 +12,9 @@ void print_usage(char *argv[]) {
     printf("\t -n - create new database file\n");
     printf("\t -f - (required) path to database file\n");
     printf("\t -l - list the employees\n");
-    printf("\t -a - add via CSV line of (name,address,salary)\n");
-    printf("\t -d - (employee_name) deletes the first match for select employee name");
-    printf("\t -u - (employee_name) -a (name,address,salary)");
+    printf("\t -a - add via CSV line of 'name, address, salary' \n");
+    printf("\t -d - (employee_name) deletes the first match for select employee name\n");
+    printf("\t -u - (employee_name) -a 'name, address, salary' \n");
     return;
 }
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 
         if (addstring == NULL) {
             printf("Error: To update, please use -a to provide new data.\n");
-            printf("Example: -u \"OldName\" -a \"NewName,NewAddr,NewHours\"\n");
+            printf("Example: -u \"OldName\" -a \"NewName, NewAddr, NewSalary\"\n");
             return -1;
         }
 

@@ -13,7 +13,7 @@ struct dbheader_t {
 struct employee_t {
     char name[256];
     char address[256];
-    unsigned int hours;
+    unsigned int salary;
 };
 
 int create_db_header(int fd, struct dbheader_t **headerOut);
