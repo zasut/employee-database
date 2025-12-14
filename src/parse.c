@@ -28,10 +28,10 @@ int update_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char
 
     char *newName = strtok(newString, ",");
     char *newAddr = strtok(NULL, ",");
-    char *newHours = strtok(NULL, ",");
+    char *newSalary = strtok(NULL, ",");
 
-    if (newName == NULL || newAddr == NULL || newHours == NULL) {
-        printf("Error: Invalid data format. Use 'Name,Address,Hours'\n");
+    if (newName == NULL || newAddr == NULL || newSalary == NULL) {
+        printf("Error: Invalid data format. Use 'Name,Address,Salary'\n");
         return -1;
     }
 
@@ -43,7 +43,7 @@ int update_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char
     strncpy(employees[foundIndex].address, newAddr, sizeof(employees[foundIndex].address) - 1);
     employees[foundIndex].address[sizeof(employees[foundIndex].address) - 1] = '\0';
 
-    employees[foundIndex].hours = atoi(newHours);
+    employees[foundIndex].salary = atoi(newSalary);
 
 
     printf("Employee '%s' updated successfully.\n", nameToFind);
@@ -86,7 +86,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
         printf("Employee %d\n", i);
         printf("\tName: %s\n", employees[i].name);
         printf("\tAddress: %s\n", employees[i].address);
-        printf("\tHours: %d\n", employees[i].hours);
+        printf("\tSalary: %d\n", employees[i].salary);
     }
 }
 
@@ -104,8 +104,8 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
     char *addr = strtok(NULL, ",");
     if (NULL == addr) return STATUS_ERROR;
 
-    char *hours = strtok(NULL, ",");
-    if (NULL == hours) return STATUS_ERROR;
+    char *salary = strtok(NULL, ",");
+    if (NULL == salary) return STATUS_ERROR;
 
     struct employee_t *e = *employees;
     e = realloc(e, sizeof(struct employee_t)*dbhdr->count+1);
@@ -115,11 +115,11 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 
     dbhdr->count++;
 
-    printf("%s %s %s \n", name, addr, hours);
+    printf("%s %s %s \n", name, addr, salary);
 
     strncpy(e[dbhdr->count-1].name, name, sizeof(e[dbhdr->count-1].name)-1);
     strncpy(e[dbhdr->count-1].address, addr, sizeof(e[dbhdr->count-1].address)-1);
-    e[dbhdr->count-1].hours = atoi(hours);
+    e[dbhdr->count-1].salary = atoi(salary);
 
     *employees = e;
 
@@ -145,7 +145,7 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
 
     int i = 0;
     for (; i < count; i++) {
-        employees[i].hours = ntohl(employees[i].hours);
+        employees[i].salary = ntohl(employees[i].salary);
     }
 
     *employeesOut = employees;
@@ -182,7 +182,7 @@ void output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees)
 
     int i = 0;
     for (; i < realcount; i++) {
-        employees[i].hours = htonl(employees[i].hours);
+        employees[i].salary = htonl(employees[i].salary);
         write(fd, &employees[i], sizeof(struct employee_t));
     }
 
